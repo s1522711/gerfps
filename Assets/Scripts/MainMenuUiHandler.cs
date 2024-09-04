@@ -8,12 +8,13 @@ using UnityEngine.UI;
 public class UiHandler : MonoBehaviour
 {   
     public AudioSource bobuxSound;
-    
     public string GameScene;
     public GameObject bobuxImage;
     [Range(1, 10)]
     public int bobuxImageDuration = 5;
     public GameObject settingsMenuCanvas;
+    public GameObject restartPopupCanvas;
+    public KeyCode goToGameSceneKey = KeyCode.Escape;
 
     void Start()
     {
@@ -22,6 +23,17 @@ public class UiHandler : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         QualitySettings.vSyncCount = PlayerPrefs.GetInt("VSync", 0) == 1 ? 1 : 0;
+        restartPopupCanvas.SetActive(false);
+    }
+
+    void Update()
+    {
+        // this function is called every frame
+        // it is used to check for the key press to go to the game scene
+        if (Input.GetKeyDown(goToGameSceneKey) && gameObject.activeSelf && !settingsMenuCanvas.activeSelf && !restartPopupCanvas.activeSelf)
+        {
+            PlayGame();
+        }
     }
 
     // the UiHandler class is attached to the main menu canvas

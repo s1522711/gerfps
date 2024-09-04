@@ -11,6 +11,7 @@ public class SettingsMenuHandler : MonoBehaviour
     public Toggle VSyncToggle;
     public GameObject MainMenuCanvas;
     public GameObject RestartPopupCanvas;
+    public KeyCode backKey = KeyCode.Escape;
     private bool readyToChangeDisplay = true;
     private int oldDisplayIndex;
 
@@ -32,6 +33,20 @@ public class SettingsMenuHandler : MonoBehaviour
 
         // make sure the restart popup is hidden
         RestartPopupCanvas.SetActive(false);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Handle the back key press
+        if (Input.GetKeyDown(backKey) && gameObject.activeSelf && !RestartPopupCanvas.activeSelf)
+        {
+            OnBackButtonClick();
+        }
+        else if (Input.GetKeyDown(backKey) && RestartPopupCanvas.activeSelf)
+        {
+            OnRestartCancelButtonClick();
+        }
     }
 
     public void OnDisplaySliderValueChanged()
@@ -105,5 +120,10 @@ public class SettingsMenuHandler : MonoBehaviour
         displaySlider.value = oldDisplayIndex;
         // Update the display selector text
         DisplaySelectorText.SetText("Display: " + displaySlider.value.ToString());
+    }
+
+    public void OnPopupBackgroudClick()
+    {
+        OnRestartCancelButtonClick();
     }
 }
